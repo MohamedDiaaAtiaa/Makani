@@ -235,9 +235,14 @@ document.addEventListener('DOMContentLoaded', () => {
     // ===========================================================
     function getPrograms() {
         try {
-            const stored = JSON.parse(localStorage.getItem('makani_programs') || 'null');
-            return (stored && stored.length) ? stored : DEFAULT_PROGRAMS;
-        } catch { return DEFAULT_PROGRAMS; }
+            const raw = localStorage.getItem('makani_programs');
+            if (!raw) return DEFAULT_PROGRAMS;
+            const stored = JSON.parse(raw);
+            return (Array.isArray(stored) && stored.length > 0) ? stored : DEFAULT_PROGRAMS;
+        } catch (e) { 
+            console.error('[Makani] Error loading programs:', e);
+            return DEFAULT_PROGRAMS; 
+        }
     }
 
     function renderPrograms() {
@@ -278,9 +283,14 @@ document.addEventListener('DOMContentLoaded', () => {
     // ===========================================================
     function getCoaches() {
         try {
-            const stored = JSON.parse(localStorage.getItem('makani_coaches') || 'null');
-            return (stored && stored.length) ? stored : DEFAULT_COACHES;
-        } catch { return DEFAULT_COACHES; }
+            const raw = localStorage.getItem('makani_coaches');
+            if (!raw) return DEFAULT_COACHES;
+            const stored = JSON.parse(raw);
+            return (Array.isArray(stored) && stored.length > 0) ? stored : DEFAULT_COACHES;
+        } catch (e) { 
+            console.error('[Makani] Error loading coaches:', e);
+            return DEFAULT_COACHES; 
+        }
     }
 
     function renderCoaches() {
@@ -449,6 +459,19 @@ document.addEventListener('DOMContentLoaded', () => {
             formResponse.className = 'form-response';
             submitBtn.disabled = false;
         }, 5000);
+    });
+
+    // ===========================================================
+    // 10. LIVE SYNC WITH ADMIN PANEL
+    // ===========================================================
+    window.addEventListener('storage', (e) => {
+        if (e.key === 'makani_programs' || e.key === 'makani_coaches') {
+            console.log(`[Makani] Syncing ${e.key} update...`);
+            renderPrograms();
+            renderCoaches();
+            renderSchedule();
+            renderFormPrograms();
+        }
     });
 
 });

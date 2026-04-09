@@ -3,8 +3,9 @@
 const adminApp = {
     init() {
         this.bindNav();
-        // Setup initial default data if local storage is empty
-        if (!localStorage.getItem('makani_programs')) {
+        // Setup initial default data if local storage is empty or undefined
+        const storedProgs = localStorage.getItem('makani_programs');
+        if (!storedProgs || storedProgs === '[]') {
             localStorage.setItem('makani_programs', JSON.stringify([
                 { id: 1, name: 'كيك بوكسينغ', nameEn: 'Kick Boxing', desc: 'ضربات متفجرة ولياقة بدنية.', descEn: 'Explosive striking and conditioning.', color: '#C1121F', emoji: '🥊', price_session: '100 EGP', price_month: '800 EGP', schedule: { time: '8:00 PM', days: ['sun', 'tue', 'thu'], ageGroups: ['Adults'] } },
                 { id: 2, name: 'أيكيدو', nameEn: 'Aikido', desc: 'التحكم، إعادة التوجيه، الانضباط.', descEn: 'Control, redirection, discipline.', color: '#1a237e', emoji: '🥋', price_session: '120 EGP', price_month: '1000 EGP', schedule: { time: '6:00 PM', days: ['mon', 'wed'], ageGroups: ['Kids 5-10', 'Adults'] } },
@@ -13,7 +14,9 @@ const adminApp = {
                 { id: 5, name: 'جيو جيتسو', nameEn: 'Jiu Jitsu', desc: 'المصارعة، الاستسلام، السيطرة الأرضية.', descEn: 'Grappling, submissions, ground dominance.', color: '#1b5e20', emoji: '🤼', price_session: null, price_month: null }
             ]));
         }
-        if (!localStorage.getItem('makani_coaches')) {
+
+        const storedCoaches = localStorage.getItem('makani_coaches');
+        if (!storedCoaches || storedCoaches === '[]') {
             localStorage.setItem('makani_coaches', JSON.stringify([
                 { id: 1, name: 'أحمد محمود', specialty: 'كبير مدربي الملاكمة', specialtyEn: 'Head Boxing Coach', bio: '', emoji: '🥊' },
                 { id: 2, name: 'عمر حسن', specialty: 'حزام أسود جيو جيتسو', specialtyEn: 'BJJ Black Belt', bio: '', emoji: '🥋' },
