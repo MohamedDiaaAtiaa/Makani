@@ -7,12 +7,17 @@ const adminApp = {
         if (!localStorage.getItem('makani_programs')) {
             localStorage.setItem('makani_programs', JSON.stringify([
                 { id: 1, name: 'كيك بوكسينغ', nameEn: 'Kick Boxing', desc: 'ضربات متفجرة ولياقة بدنية.', descEn: 'Explosive striking and conditioning.', color: '#C1121F', emoji: '🥊', price_session: '100 EGP', price_month: '800 EGP', schedule: { time: '8:00 PM', days: ['sun', 'tue', 'thu'], ageGroups: ['Adults'] } },
-                { id: 2, name: 'جيو جيتسو', nameEn: 'Jiu Jitsu', desc: 'المصارعة، الاستسلام.', descEn: 'Grappling, submissions.', color: '#1b5e20', emoji: '🤼', price_session: '120 EGP', price_month: '1000 EGP', schedule: { time: '6:00 PM', days: ['mon', 'wed'], ageGroups: ['Kids 5-10', 'Adults'] } }
+                { id: 2, name: 'أيكيدو', nameEn: 'Aikido', desc: 'التحكم، إعادة التوجيه، الانضباط.', descEn: 'Control, redirection, discipline.', color: '#1a237e', emoji: '🥋', price_session: '120 EGP', price_month: '1000 EGP', schedule: { time: '6:00 PM', days: ['mon', 'wed'], ageGroups: ['Kids 5-10', 'Adults'] } },
+                { id: 3, name: 'ووشو ساندا', nameEn: 'Wushu Sanda', desc: 'السرعة، الرميات، استراتيجية القتال.', descEn: 'Speed, throws, combat strategy.', color: '#b71c1c', emoji: '⚡', price_session: null, price_month: null },
+                { id: 4, name: 'ملاكمة', nameEn: 'Boxing', desc: 'الدقة، حركة القدمين، التحمل.', descEn: 'Precision, footwork, endurance.', color: '#e65100', emoji: '🎯', price_session: null, price_month: null },
+                { id: 5, name: 'جيو جيتسو', nameEn: 'Jiu Jitsu', desc: 'المصارعة، الاستسلام، السيطرة الأرضية.', descEn: 'Grappling, submissions, ground dominance.', color: '#1b5e20', emoji: '🤼', price_session: null, price_month: null }
             ]));
         }
         if (!localStorage.getItem('makani_coaches')) {
             localStorage.setItem('makani_coaches', JSON.stringify([
-                { id: 1, name: 'أحمد محمود', specialty: 'كبير مدربي الملاكمة', specialtyEn: 'Head Boxing Coach', bio: '', emoji: '🥊' }
+                { id: 1, name: 'أحمد محمود', specialty: 'كبير مدربي الملاكمة', specialtyEn: 'Head Boxing Coach', bio: '', emoji: '🥊' },
+                { id: 2, name: 'عمر حسن', specialty: 'حزام أسود جيو جيتسو', specialtyEn: 'BJJ Black Belt', bio: '', emoji: '🥋' },
+                { id: 3, name: 'طارق زيدان', specialty: 'مواي تاي / كيك بوكسينغ', specialtyEn: 'Muay Thai / Kickboxing', bio: '', emoji: '⚡' }
             ]));
         }
 
@@ -156,8 +161,10 @@ const adminPrograms = {
         };
 
         if (id) {
-            const idx = this.programs.findIndex(x => x.id == id);
-            this.programs[idx] = data;
+            const idx = this.programs.findIndex(x => String(x.id) === String(id));
+            if (idx !== -1) {
+                this.programs[idx] = { ...this.programs[idx], ...data };
+            }
         } else {
             this.programs.push(data);
         }
@@ -237,8 +244,11 @@ const adminCoaches = {
         };
 
         if (id) {
-            const idx = this.coaches.findIndex(x => x.id == id);
-            this.coaches[idx] = data;
+            const idx = this.coaches.findIndex(x => String(x.id) === String(id));
+            if (idx !== -1) {
+                // Preserve existing fields like photo if they aren't in the form
+                this.coaches[idx] = { ...this.coaches[idx], ...data };
+            }
         } else {
             this.coaches.push(data);
         }
@@ -250,7 +260,7 @@ const adminCoaches = {
 
     delete(id) {
         if(confirm('Delete this coach?')) {
-            this.coaches = this.coaches.filter(x => x.id !== id);
+            this.coaches = this.coaches.filter(x => String(x.id) !== String(id));
             localStorage.setItem('makani_coaches', JSON.stringify(this.coaches));
             this.render();
         }
