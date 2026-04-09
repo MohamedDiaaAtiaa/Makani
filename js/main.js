@@ -7,11 +7,11 @@
 
 // Default data shown on homepage when admin hasn't set up data yet
 const DEFAULT_PROGRAMS = [
-    { id: 1, name: 'كيك بوكسينغ', nameEn: 'Kick Boxing', desc: 'ضربات متفجرة ولياقة بدنية.', descEn: 'Explosive striking and conditioning.', color: '#C1121F', emoji: '🥊', price_session: null, price_month: null, schedule: { time: '8:00 PM', days: ['sun', 'tue', 'thu'], ageGroups: [] } },
-    { id: 2, name: 'أيكيدو', nameEn: 'Aikido', desc: 'التحكم، إعادة التوجيه، الانضباط.', descEn: 'Control, redirection, discipline.', color: '#1a237e', emoji: '🥋', price_session: null, price_month: null, schedule: { time: '6:00 PM', days: ['mon', 'wed'], ageGroups: [] } },
-    { id: 3, name: 'ووشو ساندا', nameEn: 'Wushu Sanda', desc: 'السرعة، الرميات، استراتيجية القتال.', descEn: 'Speed, throws, combat strategy.', color: '#b71c1c', emoji: '⚡', price_session: null, price_month: null },
-    { id: 4, name: 'ملاكمة', nameEn: 'Boxing', desc: 'الدقة، حركة القدمين، التحمل.', descEn: 'Precision, footwork, endurance.', color: '#e65100', emoji: '🎯', price_session: null, price_month: null },
-    { id: 5, name: 'جيو جيتسو', nameEn: 'Jiu Jitsu', desc: 'المصارعة، الاستسلام، السيطرة الأرضية.', descEn: 'Grappling, submissions, ground dominance.', color: '#1b5e20', emoji: '🤼', price_session: null, price_month: null },
+    { id: 1, ccode: 'KB-01', name: 'كيك بوكسينغ', nameEn: 'Kick Boxing', desc: 'ضربات متفجرة ولياقة بدنية.', descEn: 'Explosive striking and conditioning.', color: '#C1121F', emoji: '🥊', price_session: null, price_month: null, schedule: { time: '8:00 PM', days: ['sun', 'tue', 'thu'], ageGroups: [] } },
+    { id: 2, ccode: 'AK-01', name: 'أيكيدو', nameEn: 'Aikido', desc: 'التحكم، إعادة التوجيه، الانضباط.', descEn: 'Control, redirection, discipline.', color: '#1a237e', emoji: '🥋', price_session: null, price_month: null, schedule: { time: '6:00 PM', days: ['mon', 'wed'], ageGroups: [] } },
+    { id: 3, ccode: 'WS-01', name: 'ووشو ساندا', nameEn: 'Wushu Sanda', desc: 'السرعة، الرميات، استراتيجية القتال.', descEn: 'Speed, throws, combat strategy.', color: '#b71c1c', emoji: '⚡', price_session: null, price_month: null },
+    { id: 4, ccode: 'BX-01', name: 'ملاكمة', nameEn: 'Boxing', desc: 'الدقة، حركة القدمين، التحمل.', descEn: 'Precision, footwork, endurance.', color: '#e65100', emoji: '🎯', price_session: null, price_month: null },
+    { id: 5, ccode: 'JJ-01', name: 'جيو جيتسو', nameEn: 'Jiu Jitsu', desc: 'المصارعة، الاستسلام، السيطرة الأرضية.', descEn: 'Grappling, submissions, ground dominance.', color: '#1b5e20', emoji: '🤼', price_session: null, price_month: null },
 ];
 
 const DEFAULT_COACHES = [
@@ -267,7 +267,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 </div>
                 <div class="card-overlay"></div>
                 <div class="card-content">
-                    <h3>${name}</h3>
+                    <h3>${name} <small style="font-size:0.6em; opacity:0.6; vertical-align:middle; border:1px solid currentColor; padding:1px 4px; border-radius:3px; margin-left:5px;">${p.ccode || ''}</small></h3>
                     <p>${desc}</p>
                     ${priceHtml}
                 </div>
@@ -376,7 +376,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 return `
                 <div class="schedule-card">
-                    <div class="sched-program-name">${name}</div>
+                    <div class="sched-program-name">${name} <span style="font-size:0.7em; opacity:0.5;">(${p.ccode || '-'})</span></div>
                     ${time ? `<div class="sched-time">${time}</div>` : ''}
                     <div class="sched-days">${days || `<span style="color:var(--text-muted);font-size:0.85rem">${lang === 'en' ? 'Days TBD' : 'الأيام غير محددة'}</span>`}</div>
                     ${ages ? `<div class="sched-ages">${ages}</div>` : ''}

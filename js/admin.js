@@ -7,11 +7,11 @@ const adminApp = {
         const storedProgs = localStorage.getItem('makani_programs');
         if (storedProgs === null) {
             localStorage.setItem('makani_programs', JSON.stringify([
-                { id: 1, name: 'كيك بوكسينغ', nameEn: 'Kick Boxing', desc: 'ضربات متفجرة ولياقة بدنية.', descEn: 'Explosive striking and conditioning.', color: '#C1121F', emoji: '🥊', price_session: '100 EGP', price_month: '800 EGP', schedule: { time: '8:00 PM', days: ['sun', 'tue', 'thu'], ageGroups: [] } },
-                { id: 2, name: 'أيكيدو', nameEn: 'Aikido', desc: 'التحكم، إعادة التوجيه، الانضباط.', descEn: 'Control, redirection, discipline.', color: '#1a237e', emoji: '🥋', price_session: '120 EGP', price_month: '1000 EGP', schedule: { time: '6:00 PM', days: ['mon', 'wed'], ageGroups: [] } },
-                { id: 3, name: 'ووشو ساندا', nameEn: 'Wushu Sanda', desc: 'السرعة، الرميات، استراتيجية القتال.', descEn: 'Speed, throws, combat strategy.', color: '#b71c1c', emoji: '⚡', price_session: null, price_month: null },
-                { id: 4, name: 'ملاكمة', nameEn: 'Boxing', desc: 'الدقة، حركة القدمين، التحمل.', descEn: 'Precision, footwork, endurance.', color: '#e65100', emoji: '🎯', price_session: null, price_month: null },
-                { id: 5, name: 'جيو جيتسو', nameEn: 'Jiu Jitsu', desc: 'المصارعة، الاستسلام، السيطرة الأرضية.', descEn: 'Grappling, submissions, ground dominance.', color: '#1b5e20', emoji: '🤼', price_session: null, price_month: null }
+                { id: 1, ccode: 'KB-01', name: 'كيك بوكسينغ', nameEn: 'Kick Boxing', desc: 'ضربات متفجرة ولياقة بدنية.', descEn: 'Explosive striking and conditioning.', color: '#C1121F', emoji: '🥊', price_session: '100 EGP', price_month: '800 EGP', schedule: { time: '8:00 PM', days: ['sun', 'tue', 'thu'], ageGroups: [] } },
+                { id: 2, ccode: 'AK-01', name: 'أيكيدو', nameEn: 'Aikido', desc: 'التحكم، إعادة التوجيه، الانضباط.', descEn: 'Control, redirection, discipline.', color: '#1a237e', emoji: '🥋', price_session: '120 EGP', price_month: '1000 EGP', schedule: { time: '6:00 PM', days: ['mon', 'wed'], ageGroups: [] } },
+                { id: 3, ccode: 'WS-01', name: 'ووشو ساندا', nameEn: 'Wushu Sanda', desc: 'السرعة، الرميات، استراتيجية القتال.', descEn: 'Speed, throws, combat strategy.', color: '#b71c1c', emoji: '⚡', price_session: null, price_month: null },
+                { id: 4, ccode: 'BX-01', name: 'ملاكمة', nameEn: 'Boxing', desc: 'الدقة، حركة القدمين، التحمل.', descEn: 'Precision, footwork, endurance.', color: '#e65100', emoji: '🎯', price_session: null, price_month: null },
+                { id: 5, ccode: 'JJ-01', name: 'جيو جيتسو', nameEn: 'Jiu Jitsu', desc: 'المصارعة، الاستسلام، السيطرة الأرضية.', descEn: 'Grappling, submissions, ground dominance.', color: '#1b5e20', emoji: '🤼', price_session: null, price_month: null }
             ]));
         }
 
@@ -48,6 +48,7 @@ const adminApp = {
                 if (target === 'dashboard') adminDashboard.render();
                 if (target === 'programs') adminPrograms.render();
                 if (target === 'coaches') adminCoaches.render();
+                if (target === 'applications') adminApplications.render();
                 if (target === 'members') adminMembers.render();
                 if (target === 'attendance') adminAttendance.render();
             });
@@ -57,7 +58,8 @@ const adminApp = {
 
 const adminDashboard = {
     render() {
-        const members = JSON.parse(localStorage.getItem('makani_submissions') || '[]');
+        const applications = JSON.parse(localStorage.getItem('makani_submissions') || '[]');
+        const members = JSON.parse(localStorage.getItem('makani_members') || '[]');
         const programs = JSON.parse(localStorage.getItem('makani_programs') || '[]');
         const coaches = JSON.parse(localStorage.getItem('makani_coaches') || '[]');
 
@@ -66,7 +68,7 @@ const adminDashboard = {
         document.getElementById('stat-coaches').textContent = coaches.length;
 
         const tbody = document.querySelector('#recent-members-table tbody');
-        const recent = [...members].reverse().slice(0, 5);
+        const recent = [...applications].reverse().slice(0, 5);
         tbody.innerHTML = recent.map(m => `
             <tr>
                 <td>${m.date || '-'}</td>
@@ -89,6 +91,7 @@ const adminPrograms = {
         tbody.innerHTML = this.programs.map(p => `
             <tr>
                 <td style="font-size:32px;">${p.emoji || '🥊'}</td>
+                <td><code style="background:var(--surface-hover); padding:2px 6px; border-radius:4px; color:var(--secondary)">${p.ccode || '-'}</code></td>
                 <td><strong>${p.nameEn || p.name}</strong><br><small style="color:var(--text-muted)">${p.name}</small></td>
                 <td>${p.price_session ? p.price_session : '-'} / ${p.price_month ? p.price_month : '-'}</td>
                 <td>
@@ -100,7 +103,7 @@ const adminPrograms = {
                     <button class="btn btn-danger" onclick="adminPrograms.delete(${p.id})"><i class="fas fa-trash"></i></button>
                 </td>
             </tr>
-        `).join('') || '<tr><td colspan="5" style="text-align:center">No programs found</td></tr>';
+        `).join('') || '<tr><td colspan="6" style="text-align:center">No programs found</td></tr>';
     },
 
     openModal() {
@@ -127,6 +130,7 @@ const adminPrograms = {
         document.getElementById('prog-price-month').value = p.price_month || '';
         document.getElementById('prog-color').value = p.color || '#C1121F';
         document.getElementById('prog-emoji').value = p.emoji || '🥊';
+        document.getElementById('prog-ccode').value = p.ccode || '';
         
         document.getElementById('prog-time').value = p.schedule?.time || '';
         document.getElementById('prog-ages').value = (p.schedule?.ageGroups || []).join(', ');
@@ -156,6 +160,7 @@ const adminPrograms = {
             price_month: document.getElementById('prog-price-month').value.trim(),
             color: document.getElementById('prog-color').value,
             emoji: document.getElementById('prog-emoji').value.trim(),
+            ccode: document.getElementById('prog-ccode').value.trim(),
             schedule: {
                 time: document.getElementById('prog-time').value.trim(),
                 days: days,
@@ -270,14 +275,14 @@ const adminCoaches = {
     }
 };
 
-const adminMembers = {
-    members: [],
+const adminApplications = {
+    apps: [],
 
     render() {
-        this.members = JSON.parse(localStorage.getItem('makani_submissions') || '[]');
-        const tbody = document.querySelector('#members-table tbody');
+        this.apps = JSON.parse(localStorage.getItem('makani_submissions') || '[]');
+        const tbody = document.querySelector('#applications-table tbody');
         
-        tbody.innerHTML = [...this.members].reverse().map(m => `
+        tbody.innerHTML = [...this.apps].reverse().map(m => `
             <tr>
                 <td>${m.date || '-'}</td>
                 <td><strong>${m.name}</strong></td>
@@ -286,46 +291,138 @@ const adminMembers = {
                 <td>${m.program}</td>
                 <td>${m.message || '-'}</td>
                 <td>
-                    <select class="form-control" style="width: auto; padding: 5px;" onchange="adminMembers.updateStatus('${m.id}', this.value)">
-                        <option value="pending" ${m.status === 'pending'?'selected':''}>Pending</option>
-                        <option value="active" ${m.status === 'active'?'selected':''}>Active</option>
-                    </select>
-                </td>
-                <td>
-                    <button class="btn btn-danger" onclick="adminMembers.delete('${m.id}')"><i class="fas fa-trash"></i></button>
+                    <button class="btn btn-danger" onclick="adminApplications.delete('${m.id}')"><i class="fas fa-trash"></i></button>
                 </td>
             </tr>
-        `).join('') || '<tr><td colspan="8" style="text-align:center">No members found</td></tr>';
+        `).join('') || '<tr><td colspan="7" style="text-align:center">No applications found</td></tr>';
     },
 
-    updateStatus(id, newStatus) {
-        const idx = this.members.findIndex(x => String(x.id) === String(id));
-        if (idx !== -1) {
-            this.members[idx].status = newStatus;
-            localStorage.setItem('makani_submissions', JSON.stringify(this.members));
+    delete(id) {
+        if(confirm('Delete application?')) {
+            this.apps = this.apps.filter(x => String(x.id) !== String(id));
+            localStorage.setItem('makani_submissions', JSON.stringify(this.apps));
+            this.render();
         }
+    }
+};
+
+const adminMembers = {
+    members: [],
+    modal: document.getElementById('member-modal'),
+
+    render() {
+        this.members = JSON.parse(localStorage.getItem('makani_members') || '[]');
+        const programs = JSON.parse(localStorage.getItem('makani_programs') || '[]');
+        const tbody = document.querySelector('#members-table tbody');
+        
+        tbody.innerHTML = this.members.map(m => {
+            const memberProgs = (m.programs || []).map(pid => {
+                const p = programs.find(x => String(x.id) === String(pid));
+                if (!p) return 'Unknown';
+                return p.ccode ? `${p.ccode} (${p.nameEn || p.name})` : (p.nameEn || p.name);
+            }).join(', ');
+
+            return `
+            <tr>
+                <td><strong>${m.name}</strong></td>
+                <td>${m.ageGroup || '-'}</td>
+                <td>${memberProgs || '<span style="color:var(--primary)">No sessions assigned</span>'}</td>
+                <td>
+                    <button class="btn btn-outline" onclick="adminMembers.edit(${m.id})"><i class="fas fa-edit"></i></button>
+                    <button class="btn btn-danger" onclick="adminMembers.delete(${m.id})"><i class="fas fa-trash"></i></button>
+                </td>
+            </tr>
+        `}).join('') || '<tr><td colspan="4" style="text-align:center">No members found</td></tr>';
+    },
+
+    openModal() {
+        document.getElementById('member-form').reset();
+        document.getElementById('member-id').value = '';
+        document.getElementById('member-modal-title').textContent = 'Add Member';
+        this.renderProgramCheckboxes();
+        this.modal.classList.add('active');
+    },
+
+    closeModal() {
+        this.modal.classList.remove('active');
+    },
+
+    renderProgramCheckboxes(selectedIds = []) {
+        const programs = JSON.parse(localStorage.getItem('makani_programs') || '[]');
+        const container = document.getElementById('member-programs-list');
+        
+        container.innerHTML = programs.map(p => `
+            <div style="display:flex; align-items:center; gap:10px; margin-bottom:5px;">
+                <input type="checkbox" id="m-prog-${p.id}" class="member-prog-cb" value="${p.id}" ${selectedIds.includes(String(p.id)) ? 'checked' : ''}>
+                <label for="m-prog-${p.id}">${p.emoji} <strong>${p.ccode ? p.ccode + ' - ' : ''}${p.nameEn || p.name}</strong> <small style="color:var(--text-muted)">(${p.schedule?.time || ''})</small></label>
+            </div>
+        `).join('') || '<div style="color:var(--text-muted)">No programs found. Please add programs first.</div>';
+    },
+
+    edit(id) {
+        const m = this.members.find(x => x.id === id);
+        if (!m) return;
+        
+        document.getElementById('member-id').value = m.id;
+        document.getElementById('member-name').value = m.name;
+        document.getElementById('member-ageGroup').value = m.ageGroup || '';
+        
+        this.renderProgramCheckboxes((m.programs || []).map(String));
+        
+        document.getElementById('member-modal-title').textContent = 'Edit Member';
+        this.modal.classList.add('active');
+    },
+
+    save(e) {
+        e.preventDefault();
+        const id = document.getElementById('member-id').value;
+        const selectedPrograms = Array.from(document.querySelectorAll('.member-prog-cb:checked')).map(cb => cb.value);
+
+        const data = {
+            id: id ? parseInt(id) : Date.now(),
+            name: document.getElementById('member-name').value.trim(),
+            ageGroup: document.getElementById('member-ageGroup').value,
+            programs: selectedPrograms
+        };
+
+        if (id) {
+            const idx = this.members.findIndex(x => String(x.id) === String(id));
+            if (idx !== -1) {
+                this.members[idx] = data;
+            }
+        } else {
+            this.members.push(data);
+        }
+
+        localStorage.setItem('makani_members', JSON.stringify(this.members));
+        this.closeModal();
+        this.render();
     },
 
     delete(id) {
         if(confirm('Delete member?')) {
             this.members = this.members.filter(x => String(x.id) !== String(id));
-            localStorage.setItem('makani_submissions', JSON.stringify(this.members));
+            localStorage.setItem('makani_members', JSON.stringify(this.members));
             this.render();
         }
     }
 };
 
 const adminAttendance = {
+    selectedDate: null,
+
     render() {
         const programs = JSON.parse(localStorage.getItem('makani_programs') || '[]');
         const select = document.getElementById('att-program-select');
         
         select.innerHTML = '<option value="">-- Select Program --</option>' + programs.map(p => `
-            <option value="${p.id}">${p.nameEn || p.name}</option>
+            <option value="${p.id}">${p.ccode ? p.ccode + ' - ' : ''}${p.nameEn || p.name}</option>
         `).join('');
 
-        if (!document.getElementById('att-date').value) {
-            document.getElementById('att-date').valueAsDate = new Date();
+        if (!document.getElementById('att-month-select').value) {
+            const now = new Date();
+            const month = String(now.getMonth() + 1).padStart(2, '0');
+            document.getElementById('att-month-select').value = `${now.getFullYear()}-${month}`;
         }
         
         this.onProgramChange();
@@ -333,46 +430,100 @@ const adminAttendance = {
 
     onProgramChange() {
         const progId = document.getElementById('att-program-select').value;
-        const selectRecent = document.getElementById('att-recent-sessions');
+        const monthVal = document.getElementById('att-month-select').value;
+        const daysArea = document.getElementById('scheduled-days-area');
+        const daysList = document.getElementById('scheduled-days-list');
+        const summaryArea = document.getElementById('attendance-summary-info');
+
+        this.selectedDate = null; // Clear day selection on program/month change
+        document.getElementById('att-date').value = '';
+
+        if (!progId || !monthVal) {
+            daysArea.style.display = 'none';
+            summaryArea.style.display = 'none';
+            this.loadMembers();
+            return;
+        }
+
+        const programs = JSON.parse(localStorage.getItem('makani_programs') || '[]');
+        const p = programs.find(x => String(x.id) === String(progId));
+        if (!p) return;
+
+        daysArea.style.display = 'block';
         
-        if (selectRecent) {
-            selectRecent.innerHTML = '<option value="">-- Past month sessions --</option>';
-            if (progId) {
-                const attendanceLog = JSON.parse(localStorage.getItem('makani_attendance') || '[]');
-                const today = new Date();
-                const thirtyDaysAgo = new Date(today.setDate(today.getDate() - 30));
+        // Calculate scheduled dates
+        const [year, month] = monthVal.split('-').map(Number);
+        const scheduledDates = this.getScheduledDates(p, year, month);
+        const attendanceLog = JSON.parse(localStorage.getItem('makani_attendance') || '[]');
 
-                const progSessions = attendanceLog
-                    .filter(r => String(r.progId) === String(progId))
-                    .filter(r => new Date(r.date) >= thirtyDaysAgo)
-                    .map(r => r.date)
-                    .sort((a,b) => new Date(b) - new Date(a));
+        daysList.innerHTML = scheduledDates.map(date => {
+            const hasData = attendanceLog.some(r => r.id === `${progId}_${date}`);
+            return `
+                <button class="sched-day-btn ${hasData ? 'has-data' : ''}" onclick="adminAttendance.selectDay('${date}')">
+                    ${new Date(date).getDate()}
+                </button>
+            `;
+        }).join('');
 
-                progSessions.forEach(date => {
-                    selectRecent.innerHTML += `<option value="${date}">${date}</option>`;
-                });
+        // Show Summary Area
+        summaryArea.style.display = 'block';
+        const monthName = new Date(year, month - 1).toLocaleString('default', { month: 'long', year: 'numeric' });
+        document.getElementById('summary-month-name').textContent = monthName;
+        document.getElementById('summary-stats').textContent = `Total Scheduled: ${scheduledDates.length} Sessions`;
+
+        this.loadMembers();
+    },
+
+    getScheduledDates(program, year, month) {
+        const dates = [];
+        const daysOfWeek = program.schedule?.days || []; // e.g. ['sun', 'tue']
+        const dayMap = { sun: 0, mon: 1, tue: 2, wed: 3, thu: 4, fri: 5, sat: 6 };
+        const targetDays = daysOfWeek.map(d => dayMap[d.toLowerCase()]);
+
+        const totalDays = new Date(year, month, 0).getDate();
+        for (let i = 1; i <= totalDays; i++) {
+            const d = new Date(year, month - 1, i);
+            if (targetDays.includes(d.getDay())) {
+                const dateStr = `${year}-${String(month).padStart(2, '0')}-${String(i).padStart(2, '0')}`;
+                dates.push(dateStr);
             }
         }
+        return dates;
+    },
+
+    selectDay(date) {
+        this.selectedDate = date;
+        document.getElementById('att-date').value = date;
         
+        // Update UI
+        document.querySelectorAll('.sched-day-btn').forEach(btn => {
+            btn.classList.toggle('active', btn.textContent.trim() === String(new Date(date).getDate()));
+        });
+
+        this.loadMembers();
+    },
+
+    resetToSummary() {
+        this.selectedDate = null;
+        document.getElementById('att-date').value = '';
+        document.querySelectorAll('.sched-day-btn').forEach(btn => btn.classList.remove('active'));
         this.loadMembers();
     },
 
     loadMembers() {
         const progId = document.getElementById('att-program-select').value;
-        const date = document.getElementById('att-date').value;
+        const monthVal = document.getElementById('att-month-select').value;
+        const date = this.selectedDate;
         const tbody = document.querySelector('#attendance-table tbody');
+        const thead = document.getElementById('attendance-table-head');
 
-        if (!progId || !date) {
-            tbody.innerHTML = '<tr><td colspan="3" style="text-align:center; color:var(--text-muted);">Please select a program and date</td></tr>';
+        if (!progId || !monthVal) {
+            tbody.innerHTML = '<tr><td colspan="3" style="text-align:center; color:var(--text-muted);">Please select a program and month</td></tr>';
             return;
         }
 
-        const members = JSON.parse(localStorage.getItem('makani_submissions') || '[]');
-        const programs = JSON.parse(localStorage.getItem('makani_programs') || '[]');
-        const prog = programs.find(p => String(p.id) === progId);
-        
-        // Match either the direct programmed ID, or the name fallback
-        const progMembers = members.filter(m => String(m.program) === String(progId) || m.program === prog?.name || m.program === prog?.nameEn);
+        const manualMembers = JSON.parse(localStorage.getItem('makani_members') || '[]');
+        const progMembers = manualMembers.filter(m => (m.programs || []).includes(String(progId)));
         
         if (progMembers.length === 0) {
             tbody.innerHTML = '<tr><td colspan="3" style="text-align:center; color:var(--text-muted);">No members found in this program</td></tr>';
@@ -380,27 +531,71 @@ const adminAttendance = {
         }
 
         const attendanceLog = JSON.parse(localStorage.getItem('makani_attendance') || '[]');
-        const recordId = `${progId}_${date}`;
-        const currentRecord = attendanceLog.find(r => r.id === recordId) || { records: {} };
 
-        tbody.innerHTML = progMembers.map(m => {
-            const status = currentRecord.records[m.id] || 'pending';
-            return `
-            <tr>
-                <td><strong style="font-size: 20px;">${m.name}</strong></td>
-                <td><span class="badge ${status}">${status.toUpperCase()}</span></td>
-                <td>
-                    <button class="btn btn-success" onclick="adminAttendance.mark('${m.id}', 'present')"><i class="fas fa-check"></i> Present</button>
-                    <button class="btn btn-danger" onclick="adminAttendance.mark('${m.id}', 'absent')"><i class="fas fa-times"></i> Absent</button>
-                    <button class="btn btn-outline" onclick="adminAttendance.mark('${m.id}', 'pending')"><i class="fas fa-undo"></i> Reset</button>
-                </td>
-            </tr>
-        `}).join('');
+        if (date) {
+            // SINGLE DAY VIEW (Marking Attendance)
+            thead.innerHTML = '<th>Name</th><th>Status</th><th>Actions</th>';
+            const recordId = `${progId}_${date}`;
+            const currentRecord = attendanceLog.find(r => r.id === recordId) || { records: {} };
+
+            tbody.innerHTML = progMembers.map(m => {
+                const status = currentRecord.records[m.id] || 'pending';
+                return `
+                <tr>
+                    <td><strong style="font-size: 18px;">${m.name}</strong></td>
+                    <td><span class="badge ${status}">${status.toUpperCase()}</span></td>
+                    <td>
+                        <button class="btn btn-success" style="padding:4px 8px;" onclick="adminAttendance.mark('${m.id}', 'present')"><i class="fas fa-check"></i></button>
+                        <button class="btn btn-danger" style="padding:4px 8px;" onclick="adminAttendance.mark('${m.id}', 'absent')"><i class="fas fa-times"></i></button>
+                        <button class="btn btn-outline" style="padding:4px 8px;" onclick="adminAttendance.mark('${m.id}', 'pending')"><i class="fas fa-undo"></i></button>
+                    </td>
+                </tr>
+            `}).join('');
+        } else {
+            // MONTHLY SUMMARY VIEW
+            thead.innerHTML = '<th>Name</th><th>Attendance Summary</th><th>Percentage</th>';
+            const programs = JSON.parse(localStorage.getItem('makani_programs') || '[]');
+            const p = programs.find(x => String(x.id) === String(progId));
+            const [year, month] = monthVal.split('-').map(Number);
+            const scheduledDates = this.getScheduledDates(p, year, month);
+            
+            tbody.innerHTML = progMembers.map(m => {
+                let attendedCount = 0;
+                let absentCount = 0;
+                
+                scheduledDates.forEach(d => {
+                    const record = attendanceLog.find(r => r.id === `${progId}_${d}`);
+                    if (record && record.records[m.id] === 'present') attendedCount++;
+                    if (record && record.records[m.id] === 'absent') absentCount++;
+                });
+
+                const totalScheduled = scheduledDates.length;
+                const pct = totalScheduled > 0 ? Math.round((attendedCount / totalScheduled) * 100) : 0;
+                const statusColor = pct > 80 ? '#2ecc71' : (pct > 50 ? '#f1c40f' : '#e74c3c');
+
+                return `
+                <tr>
+                    <td><strong>${m.name}</strong></td>
+                    <td>
+                        <span style="font-size:20px; color:var(--secondary)">${attendedCount} / ${totalScheduled}</span>
+                        <small style="color:var(--text-muted); margin-left:10px;">(${absentCount} absent)</small>
+                    </td>
+                    <td>
+                        <div style="display:flex; align-items:center; gap:10px;">
+                            <div style="flex:1; height:8px; background:rgba(255,255,255,0.1); border-radius:4px; overflow:hidden;">
+                                <div style="height:100%; width:${pct}%; background:${statusColor}"></div>
+                            </div>
+                            <span style="font-weight:bold; color:${statusColor}">${pct}%</span>
+                        </div>
+                    </td>
+                </tr>
+            `}).join('');
+        }
     },
 
     mark(memberId, status) {
         const progId = document.getElementById('att-program-select').value;
-        const date = document.getElementById('att-date').value;
+        const date = this.selectedDate;
         if (!progId || !date) return;
 
         let attendanceLog = JSON.parse(localStorage.getItem('makani_attendance') || '[]');
@@ -415,16 +610,14 @@ const adminAttendance = {
         attendanceLog[recordIdx].records[memberId] = status;
         localStorage.setItem('makani_attendance', JSON.stringify(attendanceLog));
         
-        // Update recent sessions dropdown in case this was a new date
-        const selectRecent = document.getElementById('att-recent-sessions');
-        if (selectRecent && !Array.from(selectRecent.options).some(opt => opt.value === date)) {
-            const opt = document.createElement('option');
-            opt.value = date;
-            opt.textContent = date;
-            selectRecent.insertBefore(opt, selectRecent.options[1]);
-        }
+        // Update "has-data" class on calendar button
+        const [y, m, d] = date.split('-').map(Number);
+        document.querySelectorAll('.sched-day-btn').forEach(btn => {
+            if (btn.textContent.trim() === String(d)) {
+                btn.classList.add('has-data');
+            }
+        });
         
-        // visually update status row 
         this.loadMembers();
     }
 };

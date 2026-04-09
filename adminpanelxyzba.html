@@ -131,6 +131,15 @@
             .section-header { flex-direction: column; align-items: flex-start; gap: 10px; }
             .section-header h2 { font-size: 20px; }
         }
+
+        /* Attendance Calendar Styles */
+        .scheduled-days-container { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 15px; }
+        .sched-day-btn { padding: 8px 12px; background: var(--bg); border: 1px solid var(--border); border-radius: 4px; color: var(--text-muted); cursor: pointer; transition: 0.3s; font-size: 16px; }
+        .sched-day-btn:hover { border-color: var(--secondary); color: var(--secondary); }
+        .sched-day-btn.active { background: var(--secondary); color: var(--bg); border-color: var(--secondary); font-weight: bold; }
+        .sched-day-btn.has-data { border-left: 3px solid #2ecc71; }
+        
+        .attendance-summary-header { background: var(--surface-hover); padding: 15px; border-radius: 8px; margin-bottom: 20px; border: 1px solid var(--border); }
     </style>
 </head>
 <body>
@@ -145,6 +154,7 @@
             <a class="nav-item active" data-target="dashboard" onclick="closeSidebar()"><i class="fas fa-chart-line"></i> Dashboard</a>
             <a class="nav-item" data-target="programs" onclick="closeSidebar()"><i class="fas fa-dumbbell"></i> Programs</a>
             <a class="nav-item" data-target="coaches" onclick="closeSidebar()"><i class="fas fa-user-ninja"></i> Coaches</a>
+            <a class="nav-item" data-target="applications" onclick="closeSidebar()"><i class="fas fa-file-signature"></i> Applications</a>
             <a class="nav-item" data-target="members" onclick="closeSidebar()"><i class="fas fa-users"></i> Members</a>
             <a class="nav-item" data-target="attendance" onclick="closeSidebar()"><i class="fas fa-clipboard-user"></i> Attendance</a>
         </div>
@@ -188,7 +198,7 @@
                 </div>
                 <div class="table-responsive">
                     <table id="programs-table">
-                        <thead><tr><th>Emoji</th><th>Name</th><th>Price (Session/Month)</th><th>Schedule</th><th>Actions</th></tr></thead>
+                        <thead><tr><th>Emoji</th><th>Code</th><th>Name</th><th>Price (Session/Month)</th><th>Schedule</th><th>Actions</th></tr></thead>
                         <tbody></tbody>
                     </table>
                 </div>
@@ -208,14 +218,28 @@
                 </div>
             </div>
 
-            <!-- Members -->
+            <!-- Member Applications (Sign-ups) -->
+            <div id="panel-applications" class="panel">
+                <div class="section-header">
+                    <h2>Member Applications</h2>
+                </div>
+                <div class="table-responsive">
+                    <table id="applications-table">
+                        <thead><tr><th>Date</th><th>Name</th><th>Phone</th><th>Age</th><th>Program</th><th>Notes</th><th>Actions</th></tr></thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Actual Members (Manual) -->
             <div id="panel-members" class="panel">
                 <div class="section-header">
-                    <h2>All Sign-ups / Members</h2>
+                    <h2>Manage Members</h2>
+                    <button class="btn btn-primary" onclick="adminMembers.openModal()"><i class="fas fa-user-plus"></i> Add Member</button>
                 </div>
                 <div class="table-responsive">
                     <table id="members-table">
-                        <thead><tr><th>Date</th><th>Name</th><th>Phone</th><th>Age</th><th>Program</th><th>Notes</th><th>Status</th><th>Actions</th></tr></thead>
+                        <thead><tr><th>Name</th><th>Age Group</th><th>Sessions / Programs</th><th>Actions</th></tr></thead>
                         <tbody></tbody>
                     </table>
                 </div>
@@ -233,24 +257,43 @@
                             <select id="att-program-select" class="form-control" onchange="adminAttendance.onProgramChange()"></select>
                         </div>
                         <div class="form-group">
-                            <label>Session / Date</label>
-                            <div style="display: flex; flex-direction: column; gap: 10px;">
-                                <input type="date" id="att-date" class="form-control" onchange="adminAttendance.loadMembers()">
-                                <select id="att-recent-sessions" class="form-control" onchange="if(this.value){document.getElementById('att-date').value = this.value; adminAttendance.loadMembers();}">
-                                    <option value="">-- Past month sessions --</option>
-                                </select>
-                            </div>
+                            <label>Month / Year</label>
+                            <input type="month" id="att-month-select" class="form-control" onchange="adminAttendance.onProgramChange()">
+                        </div>
+                    </div>
+                    
+                    <div id="scheduled-days-area" style="margin-top:20px; display:none;">
+                        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+                            <label style="color:var(--text-muted); text-transform:uppercase; font-size:14px;">Scheduled Days (Click to mark attendance)</label>
+                            <button class="btn btn-outline" style="font-size:14px; padding:4px 10px;" onclick="adminAttendance.resetToSummary()">View Monthly Summary</button>
+                        </div>
+                        <div class="scheduled-days-container" id="scheduled-days-list"></div>
+                    </div>
+
+                    <div id="attendance-summary-info" class="attendance-summary-header" style="margin-top:20px; display:none;">
+                        <div style="display:flex; justify-content:space-between; align-items:center;">
+                            <h3 id="summary-month-name" style="color:var(--secondary)">April 2026</h3>
+                            <div id="summary-stats" style="color:var(--text-muted)">Total Scheduled: 12 Sessions</div>
                         </div>
                     </div>
                 </div>
+                
                 <div class="table-responsive">
                     <table id="attendance-table">
-                        <thead><tr><th>Name</th><th>Status</th><th>Actions</th></tr></thead>
+                        <thead>
+                            <tr id="attendance-table-head">
+                                <th>Name</th>
+                                <th>Status / Summary</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
                         <tbody>
-                            <tr><td colspan="3" style="text-align:center; color:var(--text-muted);">Please select a program and date</td></tr>
+                            <tr><td colspan="3" style="text-align:center; color:var(--text-muted);">Please select a program and month</td></tr>
                         </tbody>
                     </table>
                 </div>
+                
+                <input type="hidden" id="att-date"> <!-- We'll use this internally for the selected single date -->
             </div>
 
         </div>
@@ -275,6 +318,10 @@
                     <div class="form-group">
                         <label>English Name</label>
                         <input type="text" id="prog-nameEn" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Program Code (ccode)</label>
+                        <input type="text" id="prog-ccode" class="form-control" placeholder="e.g. KB01">
                     </div>
                 </div>
                 <div class="grid-2">
@@ -369,6 +416,41 @@
                     <input type="text" id="coach-emoji" class="form-control" value="🥊">
                 </div>
                 <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 10px;">Save Coach</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Member Modal -->
+    <div class="modal" id="member-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="member-modal-title">Add Member</h2>
+                <button class="close-modal" onclick="adminMembers.closeModal()">&times;</button>
+            </div>
+            <form id="member-form" onsubmit="adminMembers.save(event)">
+                <input type="hidden" id="member-id">
+                <div class="form-group">
+                    <label>Member Name</label>
+                    <input type="text" id="member-name" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label>Age Group</label>
+                    <select id="member-ageGroup" class="form-control" required>
+                        <option value="">-- Select Age Group --</option>
+                        <option value="Kids (5-10)">Kids (5-10)</option>
+                        <option value="Juniors (11-15)">Juniors (11-15)</option>
+                        <option value="Adults (16+)">Adults (16+)</option>
+                        <option value="Advanced">Advanced</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Assigned Sessions / Programs</label>
+                    <div id="member-programs-list" style="max-height: 200px; overflow-y: auto; background: var(--bg); padding: 10px; border: 1px solid var(--border); border-radius: 4px;">
+                        <!-- JS will populate checkboxes here -->
+                    </div>
+                    <small style="color:var(--text-muted)">Select one or more programs this member attends.</small>
+                </div>
+                <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 10px;">Save Member</button>
             </form>
         </div>
     </div>
