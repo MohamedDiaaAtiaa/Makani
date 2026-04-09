@@ -7,8 +7,8 @@
 
 // Default data shown on homepage when admin hasn't set up data yet
 const DEFAULT_PROGRAMS = [
-    { id: 1, name: 'كيك بوكسينغ', nameEn: 'Kick Boxing', desc: 'ضربات متفجرة ولياقة بدنية.', descEn: 'Explosive striking and conditioning.', color: '#C1121F', emoji: '🥊', price_session: null, price_month: null },
-    { id: 2, name: 'أيكيدو', nameEn: 'Aikido', desc: 'التحكم، إعادة التوجيه، الانضباط.', descEn: 'Control, redirection, discipline.', color: '#1a237e', emoji: '🥋', price_session: null, price_month: null },
+    { id: 1, name: 'كيك بوكسينغ', nameEn: 'Kick Boxing', desc: 'ضربات متفجرة ولياقة بدنية.', descEn: 'Explosive striking and conditioning.', color: '#C1121F', emoji: '🥊', price_session: null, price_month: null, schedule: { time: '8:00 PM', days: ['sun', 'tue', 'thu'], ageGroups: [] } },
+    { id: 2, name: 'أيكيدو', nameEn: 'Aikido', desc: 'التحكم، إعادة التوجيه، الانضباط.', descEn: 'Control, redirection, discipline.', color: '#1a237e', emoji: '🥋', price_session: null, price_month: null, schedule: { time: '6:00 PM', days: ['mon', 'wed'], ageGroups: [] } },
     { id: 3, name: 'ووشو ساندا', nameEn: 'Wushu Sanda', desc: 'السرعة، الرميات، استراتيجية القتال.', descEn: 'Speed, throws, combat strategy.', color: '#b71c1c', emoji: '⚡', price_session: null, price_month: null },
     { id: 4, name: 'ملاكمة', nameEn: 'Boxing', desc: 'الدقة، حركة القدمين، التحمل.', descEn: 'Precision, footwork, endurance.', color: '#e65100', emoji: '🎯', price_session: null, price_month: null },
     { id: 5, name: 'جيو جيتسو', nameEn: 'Jiu Jitsu', desc: 'المصارعة، الاستسلام، السيطرة الأرضية.', descEn: 'Grappling, submissions, ground dominance.', color: '#1b5e20', emoji: '🤼', price_session: null, price_month: null },
