@@ -236,9 +236,9 @@ document.addEventListener('DOMContentLoaded', () => {
     function getPrograms() {
         try {
             const raw = localStorage.getItem('makani_programs');
-            if (!raw) return DEFAULT_PROGRAMS;
+            if (raw === null) return DEFAULT_PROGRAMS;
             const stored = JSON.parse(raw);
-            return (Array.isArray(stored) && stored.length > 0) ? stored : DEFAULT_PROGRAMS;
+            return Array.isArray(stored) ? stored : DEFAULT_PROGRAMS;
         } catch (e) { 
             console.error('[Makani] Error loading programs:', e);
             return DEFAULT_PROGRAMS; 
@@ -284,9 +284,9 @@ document.addEventListener('DOMContentLoaded', () => {
     function getCoaches() {
         try {
             const raw = localStorage.getItem('makani_coaches');
-            if (!raw) return DEFAULT_COACHES;
+            if (raw === null) return DEFAULT_COACHES;
             const stored = JSON.parse(raw);
-            return (Array.isArray(stored) && stored.length > 0) ? stored : DEFAULT_COACHES;
+            return Array.isArray(stored) ? stored : DEFAULT_COACHES;
         } catch (e) { 
             console.error('[Makani] Error loading coaches:', e);
             return DEFAULT_COACHES; 

@@ -3,9 +3,9 @@
 const adminApp = {
     init() {
         this.bindNav();
-        // Setup initial default data if local storage is empty or undefined
+        // Setup initial default data if local storage is missing (null)
         const storedProgs = localStorage.getItem('makani_programs');
-        if (!storedProgs || storedProgs === '[]') {
+        if (storedProgs === null) {
             localStorage.setItem('makani_programs', JSON.stringify([
                 { id: 1, name: 'كيك بوكسينغ', nameEn: 'Kick Boxing', desc: 'ضربات متفجرة ولياقة بدنية.', descEn: 'Explosive striking and conditioning.', color: '#C1121F', emoji: '🥊', price_session: '100 EGP', price_month: '800 EGP', schedule: { time: '8:00 PM', days: ['sun', 'tue', 'thu'], ageGroups: ['Adults'] } },
                 { id: 2, name: 'أيكيدو', nameEn: 'Aikido', desc: 'التحكم، إعادة التوجيه، الانضباط.', descEn: 'Control, redirection, discipline.', color: '#1a237e', emoji: '🥋', price_session: '120 EGP', price_month: '1000 EGP', schedule: { time: '6:00 PM', days: ['mon', 'wed'], ageGroups: ['Kids 5-10', 'Adults'] } },
@@ -16,7 +16,7 @@ const adminApp = {
         }
 
         const storedCoaches = localStorage.getItem('makani_coaches');
-        if (!storedCoaches || storedCoaches === '[]') {
+        if (storedCoaches === null) {
             localStorage.setItem('makani_coaches', JSON.stringify([
                 { id: 1, name: 'أحمد محمود', specialty: 'كبير مدربي الملاكمة', specialtyEn: 'Head Boxing Coach', bio: '', emoji: '🥊' },
                 { id: 2, name: 'عمر حسن', specialty: 'حزام أسود جيو جيتسو', specialtyEn: 'BJJ Black Belt', bio: '', emoji: '🥋' },
