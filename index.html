@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="مكاني أكاديمية فنون قتالية — تدريب احترافي في الملاكمة وجيو جيتسو وكيك بوكسينغ وأيكيدو وووشو ساندا | Makani Combat Sports Academy">
+    <title>Makani | مكاني — أكاديمية الرياضات القتالية</title>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Changa:wght@400;600;800&family=Teko:wght@400;600;700&display=swap" rel="stylesheet">
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+    <!-- Loader -->
+    <div class="loader" id="loader">
+        <h1 class="loader-logo">مكاني</h1>
+    </div>
+
+    <!-- Noise Overlay -->
+    <div class="noise" aria-hidden="true"></div>
+
+    <!-- Navbar -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <a href="#home" class="logo">مكاني</a>
+            <ul class="nav-links" id="nav-links">
+                <li><a href="#about" data-i18n="nav-about">من نحن</a></li>
+                <li><a href="#programs" data-i18n="nav-programs">البرامج</a></li>
+                <li><a href="#experience" data-i18n="nav-experience">التجربة</a></li>
+                <li><a href="#coaches" data-i18n="nav-coaches">المدربين</a></li>
+                <li><a href="#schedule" data-i18n="nav-schedule">الجدول</a></li>
+            </ul>
+            <div class="nav-actions">
+                <button class="btn btn-outline lang-toggle" id="langToggle" data-i18n="lang-btn">English</button>
+                <div class="hamburger" id="hamburger" aria-label="Menu" role="button" tabindex="0">
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="hero-bg">
+            <div class="hero-video-fallback"></div>
+            <div class="hero-overlay"></div>
+            <!-- CSS-only animated particles -->
+            <div class="hero-particles" aria-hidden="true">
+                <span></span><span></span><span></span><span></span><span></span>
+                <span></span><span></span><span></span><span></span><span></span>
+                <span></span><span></span><span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="hero-content">
+            <h1 class="glitch-title" data-i18n="hero-main">اصنع قتالك</h1>
+            <p class="hero-subtitle" data-i18n="hero-sub">تدرب كمقاتل. فكر كبطل.</p>
+            <div class="hero-buttons">
+                <a href="#join" id="cta-join" class="btn btn-primary" data-i18n="btn-join">انضم إلى مكاني</a>
+                <a href="#programs" id="cta-programs" class="btn btn-secondary" data-i18n="btn-programs">استعرض البرامج</a>
+            </div>
+        </div>
+        <div class="hero-scroll-hint" aria-hidden="true">
+            <span></span>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section class="about section-padding" id="about">
+        <div class="container about-grid">
+            <div class="about-image reveal-left">
+                <div class="about-img-inner">
+                    <div class="about-img-placeholder">
+                        <svg viewBox="0 0 400 600" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <rect width="400" height="600" fill="#141414"/>
+                            <path d="M200 120C200 120 120 200 120 300C120 400 200 480 200 480C200 480 280 400 280 300C280 200 200 120 200 120Z" fill="rgba(193,18,31,0.3)"/>
+                            <circle cx="200" cy="240" r="60" fill="rgba(255,214,10,0.15)" stroke="rgba(255,214,10,0.4)" stroke-width="2"/>
+                            <text x="200" y="350" text-anchor="middle" fill="rgba(255,255,255,0.3)" font-size="80" font-family="sans-serif">🥊</text>
+                        </svg>
+                    </div>
+                </div>
+                <div class="slash-overlay"></div>
+            </div>
+            <div class="about-text reveal-right">
+                <h2 class="section-title" data-i18n="about-title">عن مكاني</h2>
+                <p data-i18n="about-desc">مكاني هي أكاديمية للرياضات القتالية تركز على القوة والانضباط والإتقان. هذه ليست صالة ألعاب رياضية عادية. هذا هو المكان الذي يُصنع فيه المقاتلون.</p>
+                <div class="stats">
+                    <div class="stat-item">
+                        <span class="stat-num" data-target="15">0</span><span class="plus">+</span>
+                        <p data-i18n="stat-exp">سنوات خبرة</p>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-num" data-target="500">0</span><span class="plus">+</span>
+                        <p data-i18n="stat-fighters">مقاتل نشط</p>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-num" data-target="30">0</span><span class="plus">+</span>
+                        <p data-i18n="stat-champs">بطولة</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Programs Section -->
+    <section class="programs section-padding" id="programs">
+        <div class="container">
+            <h2 class="section-title text-center" data-i18n="prog-title">برامج التدريب</h2>
+            <div class="programs-grid" id="programs-grid">
+                <!-- Populated by JS from localStorage or defaults -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Experience Section -->
+    <section class="experience" id="experience">
+        <h2 class="section-title text-center experience-title" data-i18n="exp-title">تدرب كمقاتل</h2>
+        <div class="exp-wrapper">
+            <div class="exp-scroll" id="exp-scroll">
+                <div class="exp-panel">
+                    <div class="exp-panel-bg" style="background: linear-gradient(135deg,#1a0a0a,#0a0a0a); display:flex; align-items:center; justify-content:center; font-size:6rem;">🥊</div>
+                    <h3 data-i18n="exp-1">سجال (Sparring)</h3>
+                </div>
+                <div class="exp-panel">
+                    <div class="exp-panel-bg" style="background: linear-gradient(135deg,#0a1a0a,#0a0a0a); display:flex; align-items:center; justify-content:center; font-size:6rem;">💪</div>
+                    <h3 data-i18n="exp-2">لياقة (Conditioning)</h3>
+                </div>
+                <div class="exp-panel">
+                    <div class="exp-panel-bg" style="background: linear-gradient(135deg,#1a1a0a,#0a0a0a); display:flex; align-items:center; justify-content:center; font-size:6rem;">🎯</div>
+                    <h3 data-i18n="exp-3">تدريب البدز (Pad Work)</h3>
+                </div>
+                <div class="exp-panel">
+                    <div class="exp-panel-bg" style="background: linear-gradient(135deg,#0a0a1a,#0a0a0a); display:flex; align-items:center; justify-content:center; font-size:6rem;">⚡</div>
+                    <h3 data-i18n="exp-4">القوة (Strength)</h3>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Coaches Section -->
+    <section class="coaches section-padding" id="coaches">
+        <div class="container">
+            <h2 class="section-title text-center" data-i18n="coach-title">مدربونا</h2>
+            <div class="coaches-grid" id="coaches-grid">
+                <!-- Populated by JS from localStorage or defaults -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Schedule Section -->
+    <section class="schedule-section section-padding" id="schedule">
+        <div class="container">
+            <h2 class="section-title text-center" data-i18n="sched-title">الجدول الأسبوعي</h2>
+            <div class="schedule-filter" id="schedule-filter">
+                <button class="sched-filter-btn active" data-filter="all">الكل</button>
+            </div>
+            <div class="schedule-grid" id="schedule-grid">
+                <!-- Populated by JS from localStorage -->
+                <div class="schedule-empty" id="schedule-empty">
+                    <p>لا يوجد جدول متاح حالياً — يتم إعداده قريباً</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Join / Membership Section with inline form -->
+    <section class="membership" id="join">
+        <div class="membership-bg"></div>
+        <div class="container membership-content text-center">
+            <h2 class="section-title" data-i18n="membership-title" style="color:var(--white);">هل أنت مستعد للقفص؟</h2>
+            <p class="membership-sub" data-i18n="membership-sub">سجّل الآن وابدأ رحلتك في عالم الفنون القتالية</p>
+
+            <form id="signup-form" class="signup-form" novalidate>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="name" data-i18n="form-label-name">الاسم الكامل</label>
+                        <input type="text" id="name" name="name" placeholder="أدخل اسمك الكامل" required autocomplete="name">
+                    </div>
+                    <div class="form-group">
+                        <label for="phone" data-i18n="form-label-phone">رقم الهاتف</label>
+                        <input type="tel" id="phone" name="phone" placeholder="أدخل رقم هاتفك" required autocomplete="tel">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="program" data-i18n="form-label-program">البرنامج</label>
+                        <select id="program" name="program" required>
+                            <option value="" disabled selected data-i18n="form-select-program">اختر البرنامج</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="age" data-i18n="form-label-age">العمر</label>
+                        <input type="number" id="age" name="age" placeholder="عمرك" min="5" max="70">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="message" data-i18n="form-label-msg">رسالة إضافية (اختياري)</label>
+                    <textarea id="message" name="message" placeholder="أي تفاصيل إضافية..."></textarea>
+                </div>
+                <button type="submit" id="submit-btn" class="btn btn-primary" data-i18n="btn-submit">إرسال الطلب</button>
+                <div id="form-response" class="form-response" role="alert"></div>
+            </form>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container text-center">
+            <h2 class="logo-footer">مكاني</h2>
+            <div class="footer-links">
+                <a href="#about" data-i18n="nav-about">من نحن</a>
+                <a href="#programs" data-i18n="nav-programs">البرامج</a>
+                <a href="#coaches" data-i18n="nav-coaches">المدربين</a>
+                <a href="#join" data-i18n="btn-join">انضم إلينا</a>
+            </div>
+            <p>&copy; 2026 Makani Academy. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Scripts — GSAP Only (no Lenis, no particles) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js" defer></script>
+    <script src="js/translations.js"></script>
+    <script src="js/main.js" defer></script>
+</body>
+</html>
